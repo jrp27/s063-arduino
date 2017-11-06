@@ -1,12 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <aREST.h>
-//#include <SendIR.h>
 
 // Creates aREST instance
 aREST rest = aREST();
-
-// Creates SendIR instance
-//SendIR sendIR = SendIR();
 
 // WiFi params
 const char* ssid = "MIT";
