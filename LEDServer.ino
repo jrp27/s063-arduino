@@ -18,16 +18,15 @@ void setup() {
   Serial.begin(115200);
   delay(10);
 
-  // Sets up restful API stuff
-
-  //rest.set_id("123456");
-  //rest.set_name("esp8266");
-
   // Sets the API routes
 
-  // LEDs on/off
-  rest.function("led/on", ledOn);
-  rest.function("led/off", ledOff);
+  // gestures
+  rest.function("standing", standing);
+  rest.function("sitting", sitting);
+  rest.function("typing", typing);
+  rest.function("writing", writing);
+  rest.function("usingPhone", usingPhone);
+  rest.function("napping", napping);
 
   // Connect to WiFi network
   Serial.println();
@@ -68,20 +67,47 @@ void loop() {
   rest.handle(client);
 }
 
-// Turn on LED
-int ledOn(String command){
-
-  // TALK TO LED
-  Serial.println("turning on");
+// Standing
+int standing(String command){
+  Serial.print("standing");
+  // ADD STANDING CODE HERE
   return 1;
 }
 
-// Turn off LED
-int ledOff(String command){
-
-  // TALK TO LED
-  Serial.println("turning off");
+// Sitting
+int sitting(String command){
+  Serial.print("sitting");
+  // ADD SITTING CODE HERE
   return 1;
 }
+
+// Typing
+int typing(String command) {
+  Serial.print("typing");
+  // ADD TYPING CODE HERE
+  return 1;
+}
+
+// Writing
+int writing(String command) {
+  Serial.print("writing");
+  // ADD WRITING CODE HERE
+  return 1;
+}
+
+// Using Phone
+int usingPhone(String command) {
+  Serial.print("using phone");
+  // ADD USING PHONE CODE HERE
+  return 1;
+}
+
+// Napping
+int napping(String command) {
+  Serial.print("napping");
+  // ADD NAPPING CODE HERE
+  return 1;
+}
+
 
 
