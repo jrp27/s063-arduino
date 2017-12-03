@@ -1,4 +1,16 @@
 #include <ESP8266WiFi.h>
+#include <ESP8266WiFiAP.h>
+#include <ESP8266WiFiGeneric.h>
+#include <ESP8266WiFiMulti.h>
+#include <ESP8266WiFiScan.h>
+#include <ESP8266WiFiSTA.h>
+#include <ESP8266WiFiType.h>
+#include <WiFiClient.h>
+#include <WiFiClientSecure.h>
+#include <WiFiServer.h>
+#include <WiFiUdp.h>
+
+#include <ESP8266WiFi.h>
 #include <aREST.h>
 
 // Creates aREST instance
@@ -52,60 +64,150 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("/");
 
+  // Initialize the D5,D6,D7 pins as an output 
+  pinMode(D5, OUTPUT);    
+  pinMode(D6, OUTPUT);
+  pinMode(D7, OUTPUT);
+
 }
+
+bool flag_standing = false;
+bool flag_sitting = false;
+bool flag_typing = false;
+bool flag_writing = false;
+bool flag_usingPhone = false;
+bool flag_napping = false;
+unsigned long time1;
 
 void loop() {
   // Handle REST calls
+   
   WiFiClient client = server.available();
   
-  if (!client) {
-    return;
-  }
-  while(!client.available()){
-    delay(1);
-  }
   rest.handle(client);
+
+  if (flag_standing) {
+    digitalWrite(D5, LOW);
+  }
+
+  if (flag_sitting) {
+    digitalWrite(D6, LOW);
+  }
+
+  if (flag_typing) {
+    digitalWrite(D7, LOW);
+  }
+
+  if (flag_writing) {
+    digitalWrite(D7, LOW);   
+    delay(100);                 
+    digitalWrite(D7, HIGH);  
+    delay(100);   
+  }
+  
+  if (flag_usingPhone) {
+    digitalWrite(D7, LOW);   
+    delay(200);                   
+    digitalWrite(D7, HIGH); 
+    delay(200);   
+  }
+
+  if (flag_napping) {
+    digitalWrite(D7, LOW);  
+    delay(300);                   
+    digitalWrite(D7, HIGH);  
+    delay(300);   
+  }
 }
 
 // Standing
 int standing(String command){
-  Serial.print("standing");
+  Serial.println("standing");
   // ADD STANDING CODE HERE
+  
+  flag_standing = true;
+  flag_sitting = false;
+  flag_typing = false;
+  flag_writing = false;
+  flag_usingPhone = false;
+  flag_napping = false;
+  
   return 1;
 }
 
 // Sitting
 int sitting(String command){
-  Serial.print("sitting");
+  Serial.println("sitting");
   // ADD SITTING CODE HERE
+
+  flag_standing = false;
+  flag_sitting = true;
+  flag_typing = false;
+  flag_writing = false;
+  flag_usingPhone = false;
+  flag_napping = false;
+  
   return 1;
 }
 
 // Typing
 int typing(String command) {
-  Serial.print("typing");
+  Serial.println("typing");
   // ADD TYPING CODE HERE
+
+  flag_standing = false;
+  flag_sitting = false;
+  flag_typing = true;
+  flag_writing = false;
+  flag_usingPhone = false;
+  flag_napping = false;
+  
   return 1;
+    
 }
 
 // Writing
 int writing(String command) {
-  Serial.print("writing");
-  // ADD WRITING CODE HERE
+  Serial.println("writing");
+  
+
+  flag_standing = false;
+  flag_sitting = false;
+  flag_typing = false;
+  flag_writing = true;
+  flag_usingPhone = false;
+  flag_napping = false;
+  
   return 1;
 }
 
 // Using Phone
 int usingPhone(String command) {
-  Serial.print("using phone");
+  Serial.println("using phone");
   // ADD USING PHONE CODE HERE
+  
+  flag_standing = false;
+  flag_sitting = false;
+  flag_typing = false;
+  flag_writing = false;
+  flag_usingPhone = true;
+  flag_napping = false; 
+  
   return 1;
 }
 
+
 // Napping
 int napping(String command) {
-  Serial.print("napping");
-  // ADD NAPPING CODE HERE
+  Serial.println("napping");
+  
+  flag_standing = false;
+  flag_sitting = false;
+  flag_typing = false;
+  flag_writing = false;
+  flag_usingPhone = false;
+  flag_napping = true; 
+
   return 1;
 }
 
