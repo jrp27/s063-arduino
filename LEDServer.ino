@@ -49,7 +49,7 @@ void setup() {
   // Connect to WiFi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    delay(50);
     Serial.print(".");
   }
   Serial.println("");
@@ -83,40 +83,42 @@ void loop() {
   // Handle REST calls
    
   WiFiClient client = server.available();
+
+  if(!client){
+    return;
+  }
+
+  while(!client.available()){
+    delay(1);
+  }
   
   rest.handle(client);
 
   if (flag_standing) {
-    digitalWrite(D5, LOW);
+    digitalWrite(D5, HIGH);
   }
 
   if (flag_sitting) {
-    digitalWrite(D6, LOW);
+    digitalWrite(D6, HIGH);
   }
 
   if (flag_typing) {
-    digitalWrite(D7, LOW);
+    digitalWrite(D7, HIGH);
   }
 
   if (flag_writing) {
     digitalWrite(D7, LOW);   
-    delay(100);                 
-    digitalWrite(D7, HIGH);  
-    delay(100);   
+ 
   }
   
   if (flag_usingPhone) {
     digitalWrite(D7, LOW);   
-    delay(200);                   
-    digitalWrite(D7, HIGH); 
-    delay(200);   
+ 
   }
 
   if (flag_napping) {
     digitalWrite(D7, LOW);  
-    delay(300);                   
-    digitalWrite(D7, HIGH);  
-    delay(300);   
+ 
   }
 }
 
