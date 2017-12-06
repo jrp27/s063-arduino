@@ -77,42 +77,89 @@ bool flag_typing = false;
 bool flag_writing = false;
 bool flag_usingPhone = false;
 bool flag_napping = false;
-unsigned long time1;
+int ledState = LOW;
+unsigned long previousMillis = 0;
+const long interval1 = 100;
+const long interval2 = 200;
+const long interval3 = 300;
+const long interval4 = 400;
+const long interval5 = 500;
+const long interval6 = 600;
+const long interval7 = 700;
+const long interval8 = 800;
+const long interval9 = 900;
+const long interval10 = 1000;
 
 void loop() {
   // Handle REST calls
-   
-  WiFiClient client = server.available();
+  unsigned long currentMillis = millis(); 
 
-  if(!client){
-    return;
-  }
-
-  while(!client.available()){
-    delay(1);
-  }
-  
-  rest.handle(client);
+ 
+ // Serial.print(flag_standing);
+ // Serial.println("C: ");
+ // Serial.println(currentMillis);
+ // Serial.println("P: ");
+ // Serial.println(previousMillis);
 
   if (flag_standing) {
-    digitalWrite(D5, HIGH);
+      digitalWrite(D7, HIGH);
   }
 
   if (flag_sitting) {
-    digitalWrite(D6, HIGH);
+    if (currentMillis - previousMillis >= 1500) {
+      previousMillis = currentMillis;
+
+      if (ledState == LOW) {
+        ledState = HIGH;
+      }
+      else{
+        ledState = LOW;
+      }
+      digitalWrite(D7, ledState);
+    }  
   }
 
   if (flag_typing) {
-    digitalWrite(D7, HIGH);
+    if (currentMillis - previousMillis >= 20) {
+      previousMillis = currentMillis;
+
+      if (ledState == LOW) {
+        ledState = HIGH;
+      }
+      else{
+        ledState = LOW;
+      }
+      digitalWrite(D7, ledState);
+    }  
   }
 
   if (flag_writing) {
-    digitalWrite(D7, LOW);   
+    if (currentMillis - previousMillis >= 20) {
+      previousMillis = currentMillis;
+
+      if (ledState == LOW) {
+        ledState = HIGH;
+      }
+      else{
+        ledState = LOW;
+      }
+      digitalWrite(D7, ledState);
+    }  
  
   }
   
   if (flag_usingPhone) {
-    digitalWrite(D7, LOW);   
+    if (currentMillis - previousMillis >= 100) {
+      previousMillis = currentMillis;
+
+      if (ledState == LOW) {
+        ledState = HIGH;
+      }
+      else{
+        ledState = LOW;
+      }
+      digitalWrite(D7, ledState);
+    }   
  
   }
 
@@ -120,6 +167,22 @@ void loop() {
     digitalWrite(D7, LOW);  
  
   }
+
+  WiFiClient client = server.available();
+  
+  if(!client){
+   return;
+  }
+
+  while(!client.available()){
+    delay(1);
+  }
+
+  rest.handle(client);
+  
+
+
+
 }
 
 // Standing
@@ -212,6 +275,5 @@ int napping(String command) {
 
   return 1;
 }
-
 
 
